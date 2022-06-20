@@ -1,3 +1,4 @@
+use std::error::Error;
 use std::ffi::{CStr, CString};
 use std::fmt::Display;
 use std::os::raw::c_char;
@@ -71,6 +72,14 @@ pub fn flatten_result<T, E>(result: Result<Result<T, E>, E>) -> Result<T, E> {
     match result {
         Ok(r) => r,
         Err(e) => Err(e),
+    }
+}
+
+pub fn flatten_mismatched_result<T, E1: Into<Box<dyn Error>>, E2: Into<Box<dyn Error>>>(result: Result<Result<T, E1>, E2>) -> Result<T, Box<dyn Error>> {
+    match result {
+        Ok(Ok(r)) => Ok(r),
+        Ok(Err(e1)) => Err(e1.into()),
+        Err(e2) => Err(e2.into()),
     }
 }
 
