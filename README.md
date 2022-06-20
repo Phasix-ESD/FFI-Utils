@@ -137,7 +137,7 @@ use ffi_utils::*;
 #[no_mangle]
 pub extern fn FunctionThatTakesString(string_ptr: *mut c_char) {
     const CONTEXT: &str = "Doing something with a string";
-    with_string(CONTEXT, string_ptr, -1, |string| {
+    with_string(CONTEXT, string_ptr, (), |string| { // Beware of using () as a return type, this could fail silently...
         // string is a &str, use it here...
     })
 }
