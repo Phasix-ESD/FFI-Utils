@@ -57,7 +57,7 @@ macro_rules! handle_result {
         match $result {
             Ok(t) => t,
             Err(e) => {
-                set_last_error($context, e);
+                $crate::set_last_error($context, e);
                 return $error_return_value;
             }
         }
